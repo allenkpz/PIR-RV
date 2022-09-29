@@ -1,10 +1,9 @@
-% The value G can be written as G = [lambda1 lambda1^2  lambda1^3 ... lambda1^2td-2]  * 
 function [d, psi,phi,r] = matrix_phi(t,k)
     d = floor( (2 * k - 1) / t );
     syms delta [1,2 * k - 2]
     syms lambda [1,k]
     syms P
-    % generate the matrix AA 
+    % generate the matrix psi 
     for i = 1 : k
         % j = 1
         if i ~= 1
@@ -24,6 +23,8 @@ function [d, psi,phi,r] = matrix_phi(t,k)
     % psi is the matrix \Psi = [\Delta , \Lambda_1+P *\Lambda_2, \Lambda_3, ... , \Lambda_{td + 1} \ ]
     % \Psi satisfy that G = -|\Psi|/|\Lambda|, where the matrix \Lambda is the matrix obtained by picking the first td+1 rows of the interpolation matrix.
     
+    
+    % generating the matrix phi 
     x = coeffs( det(psi), lambda(1) );
     for i = 1 : 2 * t * d - 2
         for j  = 1 : t * d - 1
@@ -31,6 +32,8 @@ function [d, psi,phi,r] = matrix_phi(t,k)
             phi(i,j) = temp(2);
         end
     end
+    % det(psi) = [ lambda(1), lambda(1)^2, ... , lambda(1)^(2 * t * d - 2) ]' * phi * delta
+
     
     r = rank(phi); % r is the rank of the matrix phi. r should be (t * d - 1) if phi is of full rank. 
 end
